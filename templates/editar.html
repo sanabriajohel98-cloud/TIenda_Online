@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>✏️ Editar Producto</h2>
+
+<form method="POST" enctype="multipart/form-data" class="row g-2">
+
+<div class="col-md-2">
+<input name="codigo" class="form-control" value="{{producto.codigo or ''}}" placeholder="Código">
+</div>
+
+<div class="col-md-3">
+<input name="nombre" class="form-control" value="{{producto.nombre}}" placeholder="Producto">
+</div>
+
+<div class="col-md-2">
+<input name="precio" class="form-control" value="{{producto.precio}}" placeholder="Precio (Gs.)">
+</div>
+
+<div class="col-md-2">
+<input name="stock" class="form-control" value="{{producto.stock}}" placeholder="Stock">
+</div>
+
+<div class="col-md-2">
+<input type="file" name="imagen" class="form-control">
+<small class="text-muted">Actual: {{producto.imagen}}</small>
+</div>
+
+<div class="col-md-1">
+<button class="btn btn-success">💾</button>
+</div>
+
+</form>
+
+<br>
+
+<a href="/admin" class="btn btn-secondary">← Volver</a>
+
+{% endblock %}

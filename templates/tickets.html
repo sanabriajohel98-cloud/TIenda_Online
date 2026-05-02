@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>📋 Lista de Tickets</h2>
+
+<table class="table">
+<thead>
+    <tr>
+        <th>ID</th>
+        <th>Fecha</th>
+        <th>Total</th>
+        <th>Acciones</th>
+    </tr>
+</thead>
+<tbody>
+{% for t in tickets %}
+    <tr>
+        <td>#{{t.id}}</td>
+        <td>{{t.fecha.strftime("%d/%m/%Y %H:%M")}}</td>
+        <td>Gs. {{t.total}}</td>
+        <td>
+            <a href="/ticket/{{t.id}}" class="btn btn-info btn-sm">👁️ Ver</a>
+            <a href="/editar_ticket/{{t.id}}" class="btn btn-warning btn-sm">✏️</a>
+            <a href="/eliminar_ticket/{{t.id}}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar ticket?')">🗑️</a>
+        </td>
+    </tr>
+{% endfor %}
+</tbody>
+</table>
+
+<a href="/admin" class="btn btn-secondary">← Volver</a>
+
+{% endblock %}

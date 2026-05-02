@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>✏️ Editar Venta</h2>
+
+<form method="POST" class="row g-2">
+
+<div class="col-md-4">
+<input name="producto" class="form-control" value="{{venta.producto}}" placeholder="Producto">
+</div>
+
+<div class="col-md-2">
+<input name="cantidad" class="form-control" type="number" value="{{venta.cantidad}}" placeholder="Cantidad">
+</div>
+
+<div class="col-md-3">
+<input name="total" class="form-control" type="number" step="0.01" value="{{venta.total}}" placeholder="Total (Gs.)">
+</div>
+
+<div class="col-md-3">
+<input name="cliente" class="form-control" value="{{venta.cliente or ''}}" placeholder="Cliente">
+</div>
+
+<div class="col-md-12">
+<button class="btn btn-success">💾 Guardar</button>
+</div>
+
+</form>
+
+<br>
+
+<a href="/ventas" class="btn btn-secondary">← Volver</a>
+
+{% endblock %}

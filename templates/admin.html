@@ -1,0 +1,58 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>📦 Administración</h2>
+
+<a href="/tickets" class="btn btn-info mb-3">📋 Ver Tickets</a>
+
+<form method="POST" enctype="multipart/form-data" class="row g-2">
+
+<div class="col-md-2">
+<input name="codigo" class="form-control" placeholder="Código">
+</div>
+
+<div class="col-md-3">
+<input name="nombre" class="form-control" placeholder="Producto">
+</div>
+
+<div class="col-md-2">
+<input name="precio" class="form-control" placeholder="Precio (Gs.)">
+</div>
+
+<div class="col-md-2">
+<input name="stock" class="form-control" placeholder="Stock">
+</div>
+
+<div class="col-md-2">
+<input type="file" name="imagen" class="form-control">
+</div>
+
+<div class="col-md-1">
+<button class="btn btn-success">+</button>
+</div>
+
+</form>
+
+<hr>
+
+<div class="row">
+
+{% for p in productos %}
+<div class="col-md-3">
+<div class="card p-2">
+<img src="{{ url_for('static', filename='images/' + p.imagen) }}" class="img-fluid">
+<h6>{{p.codigo}} - {{p.nombre}}</h6>
+<p>Gs. {{p.precio}} | Stock: {{p.stock}}</p>
+<div class="d-flex gap-2">
+<a href="/editar/{{p.id}}" class="btn btn-warning btn-sm">✏️ Editar</a>
+<a href="/eliminar/{{p.id}}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar producto?')">🗑️</a>
+</div>
+</div>
+</div>
+{% endfor %}
+
+</div>
+
+{% endblock %}

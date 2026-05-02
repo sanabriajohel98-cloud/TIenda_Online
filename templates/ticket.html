@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="ticket" style="max-width: 300px; margin: 0 auto; border: 1px solid #ccc; padding: 20px;">
+    <!-- Izquierda: info cliente -->
+    <div style="float: left; width: 50%;">
+        <h4 style="text-align: left;">📚 BOOKGLANCE</h4>
+        <p style="text-align: left;">{{ fecha }}</p>
+        {% if cliente %}
+        <p style="text-align: left;"><strong>Cliente: {{ cliente }}</strong></p>
+        {% endif %}
+    </div>
+    <!-- Derecha: caja POS -->
+    <div style="float: right; width: 50%; text-align: right;">
+        <h4 style="text-align: right;">💰 </h4>
+    </div>
+    <div style="clear: both;"></div>
+    <hr>
+    
+    {% for p in items %}
+    <div style="display: flex; justify-content: space-between;">
+        <span>{{p.nombre}} {% if p.cantidad > 1 %}(x{{p.cantidad}}){% endif %}</span>
+        <span>Gs. {{ "{:,}".format(p.precio|int) }}</span>
+    </div>
+    {% endfor %}
+
+    <hr>
+    <h4 style="text-align: center;">Total: Gs. {{ "{:,}".format(total|int) }}</h4>
+    <hr>
+    <p style="text-align: center;">¡Gracias por su compra!</p>
+</div>
+
+<br>
+
+<div style="text-align: center;">
+    <button onclick="window.print()" class="btn btn-primary">🖨️ Imprimir Ticket</button>
+    <a href="/caja" class="btn btn-secondary">Volver a Caja</a>
+</div>
+
+<style>
+@media print {
+    body * { visibility: hidden; }
+    .ticket, .ticket * { visibility: visible; }
+    .ticket { position: absolute; left: 0; top: 0; width: 100%; border: none; }
+    button, a { display: none; }
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>💰 Caja pos </h2>
+ <a href="/tickets" class="btn btn-info">🧾 Ver Tickets</a>
+  <a href="/limpiar" class="btn btn-warning">🗑️ Limpiar</a>
+<!-- Nombre del cliente -->
+        <form action="/cobrar" method="POST" class="mb-3">
+            <div class="mb-2">
+                <input type="text" name="cliente" class="form-control" placeholder="👤 Nombre del cliente" value="">
+            </div>
+        </form>
+<div class="row">
+    <!-- Caja actual - arriba izquierda -->
+    <div class="col-md-6">
+        <h3>🧾 Caja actual</h3>
+        
+        <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cant</th>
+                <th>Precio</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for p in caja %}
+            <tr>
+                <td>{{p.nombre}}</td>
+                <td>
+                    <form action="/actualizar_cantidad/{{loop.index0}}" method="POST" style="display:inline;">
+                        <input type="number" name="cantidad" value="{{p.cantidad}}" min="1" style="width: 50px;" onchange="this.form.submit()">
+                    </form>
+                </td>
+                <td>Gs. {{ "{:,}".format(p.precio|int) }}</td>
+                <td><a href="/quitar/{{loop.index0}}" class="btn btn-danger btn-sm">✕</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        
+        <!-- Total fijo abajo izquierda -->
+        <div style="position: fixed; bottom: 20px; left: 20px; background: #f8f9fa; padding: 15px; border-radius: 10px; border: 2px solid #8feba5; z-index: 1000;">
+            <h4 style="margin: 0;"> <a href="/cobrar" class="btn btn-success btn-lg">✔ Cobrar</a>: Gs. {{ "{:,}".format(total|int) }}</h4>
+             
+        {% if caja %}
+        
+    
+        {% endif %}
+
+        </div>
+        
+       
+       
+       
+    </div>
+    
+    <!-- Productos para agregar - derecha -->
+    <div class="col-md-6">
+        <form action="/buscar" method="GET" class="mb-3">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="🔍 Buscar..." value="{{request.args.get('q', '')}}">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+                <a href="/caja" class="btn btn-secondary">Ver todos</a>
+            </div>
+        </form>
+        
+        {% if productos %}
+        <h5>📦 Productos</h5>
+        <div class="row">
+        {% for p in productos %}
+            <div class="col-6 mb-2">
+                <div class="card p-2 text-center">
+                    <img src="{{ url_for('static', filename='images/' + p.imagen) }}" class="img-fluid mb-1" style="max-height: 60px;">
+                    <small>{{p.codigo}}</small>
+                    <h6>{{p.nombre}}</h6>
+                    <p>Gs. {{ "{:,}".format(p.precio|int) }}</p>
+                    {% if p.stock > 0 %}
+                    <a href="/agregar/{{p.id}}" class="btn btn-primary btn-sm">+</a>
+                    {% else %}
+                    <span class="badge bg-secondary">Sin stock</span>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+
+
+{% endblock %}

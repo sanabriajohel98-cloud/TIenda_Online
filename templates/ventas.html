@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>📊 Ventas</h2>
+
+{% for dia, ventas_dia in ventas_por_dia.items() %}
+<div class="card mb-3">
+    <div class="card-header bg-dark text-white">
+        <h5>📅 {{ dia }}</h5>
+    </div>
+    <div class="card-body">
+        <!-- Agrupar por venta (cliente) -->
+        {% set ventas_agrupadas = {} %}
+        {% for v in ventas_dia %}
+            {% set cliente_key = v.cliente or 'Sin cliente' %}
+            {% if cliente_key not in ventas_agrupadas %}
+                {% set _ = ventas_agrupadas.update({cliente_key: []}) %}
+            {% endif %}
+            {% set _ = ventas_agrupadas[cliente_key].append(v) %}
+        {% endfor %}
+        
+        {% for cliente_nombre, ventas_cliente in ventas_agrupadas.items() %}
+        <div class="mb-3 p-2 border rounded">
+            <h6 class="bg-light p-2">👤 {{ cliente_nombre }}</h6>
+            <table class="table table-sm mb-0">
+                <thead>
+                    <tr>
+                        <th>Hora</th>
+                        <th>Producto</th>
+                        <th>Cant</th>
+                        <th>Total</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for v in ventas_cliente %}
+                    <tr>
+                        <td>{{ v.fecha.strftime("%H:%M") }}</td>
+                        <td>{{ v.producto }}</td>
+                        <td>{{ v.cantidad }}</td>
+                        <td>Gs. {{ v.total }}</td>
+                        <td>
+                            <a href="/editar_venta/{{ v.id }}" class="btn btn-warning btn-sm">✏️</a>
+                            <a href="/eliminar_venta/{{ v.id }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar venta?')">🗑️</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <strong>Total {{ cliente_nombre }}: Gs. {{ ventas_cliente|sum(attribute='total') }}</strong>
+        </div>
+        {% endfor %}
+        
+        <strong>Total del día: Gs. {{ ventas_dia|sum(attribute='total') }}</strong>
+    </div>
+</div>
+{% endfor %}
+
+<a href="/admin" class="btn btn-secondary">Volver</a>
+
+{% endblock %}
