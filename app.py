@@ -69,11 +69,7 @@ def debug():
     except Exception as e:
         return f"❌ Error: {str(e)}"
 
-# 🧱 CREAR DB
-@app.route("/crear")
-def crear():
-    db.create_all()
-    return "✔ Base de datos lista Bookglace"
+
 
 # 🔐 LOGIN
 @app.route("/", methods=["GET", "POST"])
